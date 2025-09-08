@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RAJA GIFTS AND PHOTOGRAPHY - Personalized gifts & photography in Lohian Khas, Punjab. Order gifts, albums, and more online with WhatsApp checkout.">
+<title>RAJA GIFTS AND PHOTOGRAPHY</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .bg-primary { background-color: #2C3E50; }
+        .text-primary { color: #2C3E50; }
+        .bg-secondary { background-color: #E74C3C; }
+        .text-secondary { color: #E74C3C; }
+        .bg-ai-btn { background-color: #7C3AED; }
+        .hover\:bg-ai-btn-hover:hover { background-color: #6D28D9; }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        .active-page {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #cart-icon.has-items::after {
+            content: attr(data-count);
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #E74C3C;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #2C3E50;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Professional UI refinements */
+        .nav-select {
+          padding: 6px 10px;
+          border-radius: 8px;
+          border: 1px solid #d1d5db;
+          font-weight: 600;
+          background: #fff;
+          color: #111827;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+          transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        .nav-select:focus {
+          border-color: #2c3e50;
+          box-shadow: 0 0 0 3px rgba(44,62,80,0.2);
+          outline: none;
+        }
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          font-weight: 700;
+          padding: 12px 20px;
+          border-radius: 10px;
+          cursor: pointer;
+          border: none;
+          transition: transform .15s ease, background-color .2s ease, box-shadow .2s ease;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+        .btn:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .btn-primary { background: #e74c3c; color: #fff; }
+        .btn-primary:hover { background: #cf3e30; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #111827; }
+        .btn-outline:hover { background: #f3f4f6; }
+
+        /* Accessibility helper class */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+<header class="bg-primary text-white shadow-lg sticky top-0 z-50">
+<nav class="container mx-auto p-4 flex justify-between items-center">
+    <button id="menu-toggle" class="md:hidden text-white text-2xl" aria-label="Toggle menu">&#9776;</button>
+    <a href="#" onclick="showPage('home')" class="text-2xl font-display font-bold">RAJA GIFTS</a>
+    <div id="menu" class="hidden md:flex flex-col md:flex-row items-center bg-primary md:bg-transparent absolute md:static top-full left-0 w-full md:w-auto p-4 md:p-0 gap-4">
+        <select id="language-selector" class="nav-select text-black">
+            <option value="en" selected>English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="pa">ਪੰਜਾਬੀ</option>
+        </select>
+        <select id="currency-selector" class="nav-select text-black">
+            <option value="INR" selected>₹ INR</option>
+            <option value="USD">$ USD</option>
+        </select>
+        <a href="#" onclick="showPage('home')" class="hover:text-secondary" data-translate="navHome">Home</a>
+        <a href="#" onclick="showPage('contact')" class="hover:text-secondary" data-translate="navContact">Contact Us</a>
+        <button id="cart-icon" onclick="showPage('cart')" class="relative">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+        </button>
+    </div>
+</nav>
+</header>
+
+<main class="container mx-auto p-4 md:p-8">
+
+<div id="home" class="page active-page">
+    <div class="relative rounded-xl overflow-hidden shadow-2xl h-[500px] flex items-center justify-start text-left" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjkwMCI+CiAgICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMTcyYSIvPgogICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMWYyOTM3Ii8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgICAgPC9kZWZzPgogICAgICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIiAvPgogICAgICA8Y2lyY2xlIGN4PSIxMzAwIiBjeT0iMjAwIiByPSIyMjAiIGZpbGw9IiNlNzRjM2MiIG9wYWNpdHk9IjAuMTUiLz4KICAgICAgPGNpcmNsZSBjeD0iMzUwIiBjeT0iNjUwIiByPSIxODAiIGZpbGw9IiNlNjdlMjIiIG9wYWNpdHk9IjAuMTIiLz4KICAgIDwvc3ZnPg=='); background-size: cover; background-position: center;">
+        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+        <div class="relative z-10 text-white p-8 md:p-16 max-w-2xl">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4" data-translate="heroTitle">RAJA GIFTS & PHOTOGRAPHY</h1>
+            <p class="text-xl mb-8" data-translate="heroSubtitle">Crafting Memories, One Gift at a Time. Welcome to our creative studio where every gift tells a story.</p>
+            <button onclick="document.querySelector('#collections').scrollIntoView({ behavior: 'smooth' });" class="btn btn-primary" data-translate="heroButton">Explore Collections</button>
+        </div>
+    </div>
+    <section class="py-16 text-center">
+        <h2 class="text-4xl font-bold mb-4 text-primary" data-translate="welcomeTitle">Welcome to Our Store</h2>
+        <p class="max-w-3xl mx-auto text-lg text-gray-600" data-translate="welcomeText">
+            At RAJA GIFTS AND PHOTOGRAPHY, we believe in the magic of memories. Based in the heart of Lohian Khas, Punjab, we specialize in personalized gifts and professional photography that capture the essence of your most cherished moments.
+        </p>
+    </section>
+    <section id="collections" class="py-8">
+        <h2 class="text-4xl font-bold mb-12 text-center text-primary" data-translate="collectionsTitle">Our Collections</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <button type="button" class="group relative rounded-lg shadow-lg overflow-hidden cursor-pointer text-left" onclick="showCategoryPage('Gift Treasures')">
+                <div class="h-80 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style="background-image: url('https://placehold.co/600x400/E74C3C/FFFFFF?text=Gifts&fontsize=50')"></div>
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <h3 class="text-3xl font-bold text-white text-center">Gift Treasures</h3>
+                </div>
+            </button>
+            <button type="button" class="group relative rounded-lg shadow-lg overflow-hidden cursor-pointer text-left" onclick="showCategoryPage('Wedding Momentous')">
+                <div class="h-80 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style="background-image: url('https://placehold.co/600x400/2C3E50/FFFFFF?text=Weddings&fontsize=50')"></div>
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <h3 class="text-3xl font-bold text-white text-center">Wedding Momentous</h3>
+                </div>
+            </button>
+        </div>
+    </section>
+</div>
+
+<div id="category-page" class="page">
+    <button onclick="showPage('home')" class="btn btn-primary mb-8">&larr; <span data-translate="backToHome">Back to Home</span></button>
+    <h2 id="category-title" class="text-4xl font-bold mb-8 text-center text-primary"></h2>
+    <div id="category-header"></div>
+    <div id="sub-category-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+</div>
+
+<div id="product-list-page" class="page">
+    <button onclick="goBackToCategory()" class="btn btn-primary mb-8">&larr; <span data-translate="backToCategories">Back to Categories</span></button>
+    <h2 id="product-list-title" class="text-4xl font-bold mb-8 text-center text-primary"></h2>
+    <div id="product-list-items" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+</div>
+
+<div id="cart" class="page">
+    <h2 class="text-4xl font-bold mb-8 text-primary" data-translate="cartTitle">Your Shopping Cart</h2>
+    <div id="cart-items" class="space-y-4"></div>
+    <div id="cart-empty" class="text-center py-12 hidden">
+        <p class="text-xl text-gray-500" data-translate="cartEmpty">Your cart is empty.</p>
+    </div>
+    <div id="cart-footer" class="border-t mt-8 pt-4 text-right">
+        <p class="text-2xl font-bold text-primary">
+            <span data-translate="total">Total</span>: <span id="cart-total" data-price-inr="0">₹0.00</span>
+        </p>
+        <button onclick="showPage('checkout')" class="btn btn-primary mt-4 text-lg inline-flex items-center gap-2">
+            <span data-translate="proceedToCheckout">Proceed to Checkout</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<div id="checkout" class="page">
+    <h2 class="text-4xl font-bold mb-8 text-primary" data-translate="checkoutTitle">Checkout</h2>
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto">
+        <form id="checkout-form">
+            <label for="name" class="sr-only">Full Name</label>
+            <input type="text" id="name" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Full Name" required />
+
+            <label for="phone" class="sr-only">Phone Number</label>
+            <input type="tel" id="phone" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Phone Number (with country code)" pattern="^[+0-9\-\s]{7,20}$" title="Enter a valid phone number (with country code)" required />
+
+            <label for="address1" class="sr-only">Address Line 1</label>
+            <input type="text" id="address1" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Address Line 1" required />
+
+            <label for="address2" class="sr-only">Address Line 2</label>
+            <input type="text" id="address2" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Address Line 2 (Optional)" />
+
+            <div class="flex gap-4">
+                <label for="city" class="sr-only">City</label>
+                <input type="text" id="city" class="w-1/2 p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="City" required />
+
+                <label for="state" class="sr-only">State</label>
+                <input type="text" id="state" class="w-1/2 p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="State / Province / Region" required />
+            </div>
+
+            <div class="flex gap-4">
+                <label for="postalCode" class="sr-only">Postal Code</label>
+                <input type="text" id="postalCode" class="w-1/2 p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Postal Code / ZIP Code" pattern="^[A-Za-z0-9\-\s]{3,10}$" title="Enter a valid postal/ZIP code" required />
+
+                <label for="country" class="sr-only">Country</label>
+                <input type="text" id="country" class="w-1/2 p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Country" required />
+            </div>
+
+            <p class="text-sm text-gray-500 mb-6 text-center" data-translate="privacyHint">
+                We use WhatsApp to send your order details. No payment is collected on this form.
+            </p>
+            <button type="submit" class="btn btn-primary w-full" data-translate="placeOrder">
+                Send Order via WhatsApp
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="contact" class="page">
+    <h2 class="text-4xl font-bold mb-8 text-primary" data-translate="contactTitle">Contact Us</h2>
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto text-lg">
+        <p class="mb-4"><strong>Email:</strong>
+            <a href="mailto:Centerrajagift@gmail.com" class="text-secondary hover:underline">Centerrajagift@gmail.com</a></p>
+        <p class="mb-4"><strong>Phone:</strong>
+            <a href="tel:6280703191" class="text-secondary hover:underline">6280703191</a></p>
+        <p><strong>Address:</strong><br>Main Bazar, Bhagat Singh Chownk,<br>Opposite Govt Girl High School,<br>Lohian Khas, Punjab 144629</p>
+    </div>
+</div>
+
+</main>
+
+<div id="gemini-modal" class="fixed inset-0 bg-black bg-opacity-60 items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 max-w-lg w-full m-4 animate-fadeIn relative">
+        <button onclick="closeGeminiModal()" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800">&times;</button>
+        <div class="flex justify-between items-center mb-4">
+            <h3 id="gemini-modal-title" class="text-2xl font-bold font-display text-primary"></h3>
+        </div>
+        <div id="gemini-modal-content"></div>
+        <div id="gemini-modal-loading" class="text-center p-8 hidden">
+            <div class="spinner mx-auto"></div>
+            <p id="gemini-loading-text" class="mt-4 text-primary"></p>
+        </div>
+        <div id="gemini-modal-result" class="mt-4 p-4 bg-gray-100 rounded-lg hidden text-gray-700"></div>
+    </div>
+</div>
+
+<a href="https://wa.me/916280703191" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-transform transform hover:scale-110">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 512 512">
+        <path d="M415.5 80.5C372.2 37.2 314.3 13 256 13C132.3 13 32 113.3 32 237c0 41.3 11.3 80.5 32 115.8L32 499l128.3-33.7c34.5 19.3 72.8 29.7 111.7 29.7h.2c123.7 0 224-100.3 224-224 .1-58.3-24.2-116.2-67.7-159.5zM256 454.8c-35.3 0-69.3-9.3-98.5-26.8l-7-4.2-73.2 19.2 19.5-71.5-4.5-7.3C77.3 331.5 68 295 68 257.2c0-99 80.3-179.2 179.2-179.2 48.3 0 92.8 18.8 126.7 52.7 33.8 33.8 52.7 78.3 52.7 126.7 .1 98.9-80.2 179.2-179.2 179.2zm118.9-150.3c-6.2-3.1-36.8-18.1-42.5-20.2-5.7-2.1-9.8-3.1-14 3.1-4.2 6.2-16.1 20.2-19.7 24.3-3.7 4.2-7.3 4.7-13.5 1.6-6.2-3.1-26.1-9.6-49.7-30.6-18.3-16.3-30.7-36.5-34.3-42.7-3.7-6.2-.4-9.6 2.7-12.7 2.8-2.8 6.2-7.3 9.3-11 3.1-3.7 4.2-6.2 6.2-10.3 2.1-4.2.5-7.8-1.1-10.9-1.6-3.1-14-33.7-19.2-46.2-5.1-12.2-10.3-10.6-14-10.8-3.6-.2-7.8-.2-12-.2s-11.4 1.6-17.5 7.8c-6.2 6.2-23.3 22.7-23.3 55.4 0 32.7 23.8 64.2 27.4 68.7 3.7 4.5 46.7 71.3 113.1 99.8 16.2 7.1 29 11.3 39.1 14.5 22.9 7.3 22.9 4.5 26.9 4.2 4.2-.3 13.5-5.6 15.6-11 2.1-5.6 2.1-10.3 1.6-11.3-0.5-1.1-2.6-1.6-5.7-3.2z"/>
+    </svg>
+</a>
+
+<script>
+    // I inspected your original blueprint and adapted it to load products from the backend API.
+    // Original file (001.html) was used as the blueprint. (See assistant note in chat.) 
+
+    // --- CATEGORIES (unchanged) ---
+    const categories = {
+        "Gift Treasures": [
+            "All Items",
+            "Anniversary gift hampers",
+            "Birthday gift hampers",
+            "Diwali collection",
+            "Light frames",
+            "Phone covers",
+            "Rakhri collection",
+            "Religious photos",
+            "Teachers collection"
+        ],
+        "Wedding Momentous": [
+            "All Items",
+            "3D mini dream house",
+            "Album designes",
+            "Sehra kalera"
+        ]
+    };
+
+    // --- state ---
+    let products = [];
+    const __currency = {
+        current: 'INR',
+        rate: 0.012, // 1 INR to USD
+        symbols: { INR: '₹', USD: '$' }
+    };
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let currentCategory = '';
+
+    // --- bootstrap ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+        menuToggle.addEventListener('click', () => menu.classList.toggle('hidden'));
+        document.getElementById('language-selector').addEventListener('change', (e) => switchLanguage(e.target.value));
+        document.getElementById('currency-selector').addEventListener('change', (e) => switchCurrency(e.target.value));
+        attachCheckout();
+        switchLanguage('en');
+        switchCurrency('INR');
+        fetchProducts();
+        updateCart();
+    });
+
+    // --- fetch products from backend API ---
+    async function fetchProducts() {
+        try {
+            const res = await fetch('/api/products');
+            products = await res.json();
+            // If there is no product image for items, ensure placeholder
+            products = products.map(p => ({ image: p.image || 'https://placehold.co/400x400/cccccc/ffffff?text=No+Image', ...p }));
+        } catch (e) {
+            console.error('Failed to load products', e);
+            products = [];
+        }
+    }
+
+    // --- PAGE NAVIGATION ---
+    const pages = document.querySelectorAll('.page');
+    const folderColors = ['bg-red-400', 'bg-blue-400', 'bg-green-400', 'bg-purple-400', 'bg-yellow-400', 'bg-pink-400', 'bg-indigo-400', 'bg-teal-400'];
+    function showPage(pageId) {
+        pages.forEach(page => page.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        window.scrollTo(0, 0);
+        document.getElementById('menu').classList.add('hidden');
+    }
+    function showCategoryPage(categoryName) {
+        currentCategory = categoryName;
+        document.getElementById('category-title').innerText = categoryName;
+        const categoryHeader = document.getElementById('category-header');
+        categoryHeader.innerHTML = (categoryName === 'Gift Treasures') ? `
+            <div class="text-center mb-10 bg-purple-100 p-6 rounded-lg">
+                <p class="mb-4 text-lg text-purple-800">Not sure what to get? Let our AI assistant help you!</p>
+                <button onclick="showGiftIdeaGenerator()" class="btn bg-ai-btn text-white hover:bg-ai-btn-hover">✨ Get Gift Ideas</button>
+            </div>` : '';
+        const subCategoryList = document.getElementById('sub-category-list');
+        subCategoryList.innerHTML = '';
+        categories[categoryName].forEach((sub, index) => {
+            const colorClass = folderColors[index % folderColors.length];
+            subCategoryList.innerHTML += `
+                <div class="p-6 rounded-lg shadow-lg text-center cursor-pointer hover:shadow-xl transition-shadow ${colorClass}" onclick="showProductListPage('${sub}')">
+                    <h3 class="text-xl font-bold text-white">${sub}</h3>
+                </div>`;
+        });
+        showPage('category-page');
+    }
+    function showProductListPage(subCategory) {
+        document.getElementById('product-list-title').innerText = subCategory;
+        renderProducts(subCategory);
+        showPage('product-list-page');
+    }
+    function goBackToCategory() { showCategoryPage(currentCategory); }
+
+    // --- PRODUCT RENDERING (uses products array from API) ---
+    function renderProducts(subCategory) {
+        const container = document.getElementById('product-list-items');
+        container.innerHTML = '';
+        const subCategoriesForCurrentCategory = categories[currentCategory] || [];
+        const filteredProducts = (subCategory === 'All Items')
+            ? products.filter(p => subCategoriesForCurrentCategory.includes(p.subCategory) || subCategory === 'All Items')
+            : products.filter(p => p.subCategory === subCategory);
+
+        if (filteredProducts.length === 0) {
+            container.innerHTML = `<p class="text-center text-gray-500 col-span-full">Products are coming soon for this category!</p>`;
+            return;
+        }
+
+        filteredProducts.forEach(product => {
+            container.innerHTML += `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+                    <img src="${product.image}" alt="${product.name}" loading="lazy" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/400x400/cccccc/ffffff?text=Image+Not+Found'">
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <h3 class="text-xl font-bold text-primary mb-2">${product.name}</h3>
+                        <div class="mt-4 flex justify-between items-center">
+                            <p class="text-xl font-bold text-primary" data-price-inr="${product.price ? product.price.toFixed(2) : '0.00'}">
+                                ${formatPrice(product.price || 0)}
+                            </p>
+                            <button class="btn btn-primary" onclick="addToCart(event, ${product.id})">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>`;
+        });
+        updateAllPrices();
+    }
+
+    // --- CART LOGIC ---
+    function addToCart(event, productId) {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            cart.push(product);
+            updateCart();
+            const button = event.target;
+            button.innerText = 'Added!';
+            button.classList.add('!bg-green-500');
+            setTimeout(() => { button.innerText = 'Add to Cart'; button.classList.remove('!bg-green-500'); }, 1500);
+        }
+    }
+    function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
+    function updateCart() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalEl = document.getElementById('cart-total');
+        const cartIcon = document.getElementById('cart-icon');
+        const cartEmptyEl = document.getElementById('cart-empty');
+        const cartFooterEl = document.getElementById('cart-footer');
+        cartItemsContainer.innerHTML = '';
+        if (cart.length === 0) { cartEmptyEl.classList.remove('hidden'); cartFooterEl.classList.add('hidden'); } 
+        else { cartEmptyEl.classList.add('hidden'); cartFooterEl.classList.remove('hidden'); }
+        let total = 0;
+        cart.forEach((item, index) => {
+            total += item.price || 0;
+            cartItemsContainer.innerHTML += `
+                <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex items-center gap-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md" onerror="this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img'">
+                        <div>
+                            <p class="font-bold">${item.name}</p>
+                            <p data-price-inr="${item.price ? item.price.toFixed(2) : '0.00'}">${formatPrice(item.price || 0)}</p>
+                            <button onclick="showCardMessageGenerator('${item.name}')" class="text-sm mt-1 text-purple-600 hover:underline">✨ Write a card message with AI</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 font-bold self-start">Remove</button>
+                </div>`;
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        cartTotalEl.dataset.priceInr = total.toFixed(2);
+        cartTotalEl.innerText = formatPrice(total);
+        if (cart.length > 0) { cartIcon.classList.add('has-items'); cartIcon.dataset.count = cart.length; } 
+        else { cartIcon.classList.remove('has-items'); cartIcon.dataset.count = 0; }
+        updateAllPrices();
+    }
+
+    // --- CHECKOUT ---
+    function buildOrderSummary() {
+        let text = "Hi, I want to place an order.\\n\\n*My Order Details:*\\n";
+        if (cart.length === 0) text += "- (No items in cart)\\n\\n";
+        else {
+            let totalInr = 0;
+            cart.forEach(it => { totalInr += it.price || 0; text += `- ${it.name} (${formatPrice(it.price || 0)})\\n`; });
+            text += `\\n*Total: ${formatPrice(totalInr)}*\\n\\n`;
+        }
+        const get = id => document.getElementById(id)?.value?.trim() || '';
+        const name = get('name'), phone = get('phone'), address1 = get('address1'), address2 = get('address2');
+        const city = get('city'), state = get('state'), postalCode = get('postalCode'), country = get('country');
+        text += "*Delivery Details:*\\n";
+        if (name) text += `Name: ${name}\\n`;
+        if (phone) text += `Phone: ${phone}\\n`;
+        if (address1 || address2) text += `Address: ${address1}${address2 ? ', ' + address2 : ''}\\n`;
+        if (city) text += `City: ${city}\\n`;
+        if (state) text += `State/Region: ${state}\\n`;
+        if (postalCode) text += `Postal Code: ${postalCode}\\n`;
+        if (country) text += `Country: ${country}\\n`;
+        return text;
+    }
+    function attachCheckout() {
+        const form = document.getElementById('checkout-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const summary = buildOrderSummary();
+                const waLink = 'https://wa.me/916280703191?text=' + encodeURIComponent(summary);
+                window.open(waLink, '_blank');
+            });
+        }
+    }
+
+    // --- LANGUAGE & CURRENCY ---
+    const translations = {
+        en: { navHome: "Home", navContact: "Contact Us", heroTitle: "RAJA GIFTS & PHOTOGRAPHY", heroSubtitle: "Crafting Memories, One Gift at a Time. Welcome to our creative studio where every gift tells a story.", heroButton: "Explore Collections", welcomeTitle: "Welcome to Our Store", welcomeText: "At RAJA GIFTS AND PHOTOGRAPHY, we believe in the magic of memories. Based in the heart of Lohian Khas, Punjab, we specialize in personalized gifts and professional photography that capture the essence of your most cherished moments.", collectionsTitle: "Our Collections", backToHome: "Back to Home", backToCategories: "Back to Categories", cartTitle: "Your Shopping Cart", total: "Total", proceedToCheckout: "Proceed to Checkout", checkoutTitle: "Checkout", privacyHint: "We use WhatsApp to send your order details. No payment is collected on this form.", placeOrder: "Send Order via WhatsApp", contactTitle: "Contact Us", cartEmpty: "Your cart is empty." },
+        hi: { navHome: "होम", navContact: "संपर्क करें", heroTitle: "राजा गिफ्ट्स और फोटोग्राफी", heroSubtitle: "यादें बनाना, एक समय में एक उपहार। हमारे रचनात्मक स्टूडियो में आपका स्वागत है जहाँ हर उपहार एक कहानी कहता है।", heroButton: "संग्रह देखें", welcomeTitle: "हमारे स्टोर में आपका स्वागत है", welcomeText: "राजा गिफ्ट्स और फोटोग्राफी में, हम यादों के जादू में विश्वास करते हैं। लोहियां खास, पंजाब के केंद्र में स्थित, हम व्यक्तिगत उपहार और पेशेवर फोटोग्राफी में विशेषज्ञ हैं जो आपके सबसे प्रिय क्षणों का सार पकड़ते हैं।", collectionsTitle: "हमारे संग्रह", backToHome: "होम पर वापस", backToCategories: "श्रेणियों पर वापस", cartTitle: "आपकी शॉपिंग कार्ट", total: "कुल", proceedToCheckout: "चेकआउट के लिए आगे बढ़ें", checkoutTitle: "चेकआउट", privacyHint: "हम आपके ऑर्डर विवरण भेजने के लिए व्हाट्सएप का उपयोग करते हैं। इस फॉर्म पर कोई भुगतान एकत्र नहीं किया जाता है।", placeOrder: "व्हाट्सएप के माध्यम से ऑर्डर भेजें", contactTitle: "हमसे संपर्क करें", cartEmpty: "आपकी कार्ट खाली है।" },
+        pa: { navHome: "ਹੋਮ", navContact: "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ", heroTitle: "ਰਾਜਾ ਗਿਫਟਸ ਅਤੇ ਫੋਟੋਗ੍ਰਾਫੀ", heroSubtitle: "ਯਾਦਾਂ ਨੂੰ ਤਿਆਰ ਕਰਨਾ, ਇੱਕ ਸਮੇਂ ਵਿੱਚ ਇੱਕ ਤੋਹਫ਼ਾ। ਸਾਡੇ ਰਚਨਾਤਮਕ ਸਟੂਡੀਓ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ ਜਿੱਥੇ ਹਰ ਤੋਹਫ਼ਾ ਇੱਕ ਕਹਾਣੀ ਦੱਸਦਾ ਹੈ।", heroButton: "ਸੰਗ੍ਰਹਿ ਦੀ ਪੜਚੋਲ ਕਰੋ", welcomeTitle: "ਸਾਡੇ ਸਟੋਰ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ", welcomeText: "ਰਾਜਾ ਗਿਫਟਸ ਅਤੇ ਫੋਟੋਗ੍ਰਾਫੀ ਵਿਖੇ, ਅਸੀਂ ਯਾਦਾਂ ਦੇ ਜਾਦੂ ਵਿੱਚ ਵਿਸ਼ਵਾਸ ਕਰਦੇ ਹਾਂ। ਲੋਹੀਆਂ ਖਾਸ, ਪੰਜਾਬ ਦੇ ਦਿਲ ਵਿੱਚ ਸਥਿਤ, ਅਸੀਂ ਵਿਅਕਤੀਗਤ ਤੋਹਫ਼ਿਆਂ ਅਤੇ ਪੇਸ਼ੇਵਰ ਫੋਟੋਗ੍ਰਾਫੀ ਵਿੱਚ ਮੁਹਾਰਤ ਰੱਖਦੇ ਹਾਂ ਜੋ ਤੁਹਾਡੇ ਸਭ ਤੋਂ ਪਿਆਰੇ ਪਲਾਂ ਦੇ ਤੱਤ ਨੂੰ ਕੈਪਚਰ ਕਰਦੇ ਹਨ।", collectionsTitle: "ਸਾਡੇ ਸੰਗ੍ਰਹਿ", backToHome: "ਹੋਮ 'ਤੇ ਵਾਪਸ ਜਾਓ", backToCategories: "ਸ਼੍ਰੇਣੀਆਂ 'ਤੇ ਵਾਪਸ ਜਾਓ", cartTitle: "ਤੁਹਾਡੀ ਸ਼ਾਪਿੰਗ ਕਾਰਟ", total: "ਕੁੱਲ", proceedToCheckout: "ਚੈੱਕਆਉਟ ਲਈ ਅੱਗੇ ਵਧੋ", checkoutTitle: "ਚੈੱਕਆਉਟ", privacyHint: "ਅਸੀਂ ਤੁਹਾਡੇ ਆਰਡਰ ਦੇ ਵੇਰਵੇ ਭੇਜਣ ਲਈ WhatsApp ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹਾਂ। ਇਸ ਫਾਰਮ 'ਤੇ ਕੋਈ ਭੁਗਤਾਨ ਇਕੱਠਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।", placeOrder: "WhatsApp ਰਾਹੀਂ ਆਰਡਰ ਭੇਜੋ", contactTitle: "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ", cartEmpty: "ਤੁਹਾਡੀ ਕਾਰਟ ਖਾਲੀ ਹੈ।" }
+    };
+
+    function switchLanguage(lang) {
+        const translationSet = translations[lang] || translations.en;
+        document.querySelectorAll('[data-translate]').forEach(el => {
+            const key = el.dataset.translate;
+            if (translationSet[key]) el.innerText = translationSet[key];
+        });
+    }
+
+    function formatPrice(priceInr) {
+        const symbol = __currency.symbols[__currency.current];
+        const value = (__currency.current === 'USD') ? (priceInr * __currency.rate) : priceInr;
+        return `${symbol}${(value || 0).toFixed(2)}`;
+    }
+
+    function updateAllPrices() {
+        document.querySelectorAll('[data-price-inr]').forEach(el => {
+            const priceInr = parseFloat(el.dataset.priceInr || '0');
+            el.innerText = formatPrice(priceInr);
+        });
+    }
+
+    function switchCurrency(newCurrency) {
+        __currency.current = newCurrency;
+        updateAllPrices();
+    }
+
+    // --- AI MODAL (placeholder same as blueprint) ---
+    const geminiModal = document.getElementById('gemini-modal');
+    const modalTitle = document.getElementById('gemini-modal-title');
+    const modalLoading = document.getElementById('gemini-modal-loading');
+    const modalLoadingText = document.getElementById('gemini-loading-text');
+    const modalResult = document.getElementById('gemini-modal-result');
+
+    function showGiftIdeaGenerator() {
+        modalTitle.innerText = "AI Gift Idea Generator";
+        modalResult.innerHTML = "";
+        modalResult.classList.add('hidden');
+        modalLoadingText.innerText = "Generating unique gift ideas...";
+        modalLoading.classList.remove('hidden');
+        geminiModal.classList.add('flex');
+        geminiModal.classList.remove('hidden');
+        setTimeout(() => {
+            modalLoading.classList.add('hidden');
+            modalResult.innerHTML = `<p class="font-bold mb-2">Here are a few ideas for a special occasion:</p>
+                <ul class="list-disc list-inside"><li>A personalized star map of the night you met.</li><li>A custom-made photo album with handwritten notes.</li><li>A subscription box tailored to their hobbies (e.g., coffee, books).</li></ul>`;
+            modalResult.classList.remove('hidden');
+        }, 1200);
+    }
+
+    function showCardMessageGenerator(itemName) {
+        modalTitle.innerText = "AI Card Message Writer";
+        modalResult.innerHTML = "";
+        modalResult.classList.add('hidden');
+        modalLoadingText.innerText = `Writing a message for the ${itemName}...`;
+        modalLoading.classList.remove('hidden');
+        geminiModal.classList.add('flex');
+        geminiModal.classList.remove('hidden');
+        setTimeout(() => {
+            modalLoading.classList.add('hidden');
+            modalResult.innerHTML = `<p class="font-bold mb-2">Here's a sample message for your ${itemName}:</p>
+                <p>"To the one who makes every day brighter, hope this little gift brings a smile to your face. Thinking of you always!"</p>`;
+            modalResult.classList.remove('hidden');
+        }, 1200);
+    }
+
+    function closeGeminiModal() {
+        geminiModal.classList.add('hidden');
+        geminiModal.classList.remove('flex');
+    }
+</script>
+</body>
+</html>
